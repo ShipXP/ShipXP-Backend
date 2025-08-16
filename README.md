@@ -52,26 +52,26 @@ Communication primarily occurs via RESTful API calls over HTTP, with data exchan
 5.  Frontend notifies backend of the transaction signature.
 6.  Backend verifies the on-chain transaction and updates completion status (e.g., "confirmed") and user XP.
 
-## 7. Architecture Diagram (Conceptual)
+## 7. Architecture Diagram
 
 ```mermaid
 graph TD
-    User -->|Frontend (Next.js)| Frontend
-    Frontend -->|API Calls (REST/JSON)| Backend
+    User --> Frontend (Frontend (Next.js))
+    Frontend --> Backend (API Calls (REST/JSON))
 
     subgraph Backend (Node.js/Express.js)
-        Backend -->|Firestore SDK| Google_Firestore[Google Firestore DB]
-        Backend -->|Honeycomb Client| Honeycomb_Protocol[Honeycomb Protocol (Solana)]
-        Backend -->|Verxio Client| Verxio_Protocol[Verxio Protocol (Solana)]
-        Backend -->|Gemini API| Google_Gemini[Google Gemini AI]
-        Backend --o|Background Job| Confirmations_Job[confirmations.ts]
+        Backend --> Google_Firestore[Google Firestore DB] (Firestore SDK)
+        Backend --> Honeycomb_Protocol[Honeycomb Protocol (Solana)] (Honeycomb Client)
+        Backend --> Verxio_Protocol[Verxio Protocol (Solana)] (Verxio Client)
+        Backend --> Google_Gemini[Google Gemini AI] (Gemini API)
+        Backend -- Confirmations_Job[confirmations.ts] (Background Job) --> Confirmations_Job
     end
 
-    Honeycomb_Protocol --o|On-chain Events| Confirmations_Job
-    Verxio_Protocol --o|On-chain Events| Confirmations_Job
+    Honeycomb_Protocol -- Confirmations_Job (On-chain Events) --> Confirmations_Job
+    Verxio_Protocol -- Confirmations_Job (On-chain Events) --> Confirmations_Job
 
-    Frontend --o|User Wallet Interaction| Solana_Blockchain[Solana Blockchain]
-    Solana_Blockchain --o|Transaction Confirmation| Backend
+    Frontend -- Solana_Blockchain[Solana Blockchain] (User Wallet Interaction) --> Solana_Blockchain
+    Solana_Blockchain -- Backend (Transaction Confirmation) --> Backend
 
     style Frontend fill:#f9f,stroke:#333,stroke-width:2px
     style Backend fill:#bbf,stroke:#333,stroke-width:2px
