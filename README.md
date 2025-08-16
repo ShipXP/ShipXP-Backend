@@ -52,35 +52,26 @@ Communication primarily occurs via RESTful API calls over HTTP, with data exchan
 5.  Frontend notifies backend of the transaction signature.
 6.  Backend verifies the on-chain transaction and updates completion status (e.g., "confirmed") and user XP.
 
-## 7. Architecture Diagram
+## 7. Architecture Diagram (Conceptual)
 
-```mermaid
-graph TD
-    User --> Frontend_Node[Frontend (Next.js)]
-    Frontend_Node -- "API Calls (REST/JSON)" --> Backend_Node[Backend (Node.js/Express.js)]
+```
+User
+  ↓
+Frontend (Next.js)
+  ↓ (API Calls - REST/JSON)
+Backend (Node.js/Express.js)
+  ↓
+  ├── Google Firestore DB (Firestore SDK)
+  ├── Honeycomb Protocol (Solana) (Client)
+  ├── Verxio Protocol (Solana) (Client)
+  ├── Google Gemini AI (API)
+  └── Confirmations Job (confirmations.ts - Background Job)
 
-    subgraph Backend_Node
-        Backend_Node --> Google_Firestore[Google Firestore DB]
-        Backend_Node --> Honeycomb_Protocol[Honeycomb Protocol (Solana)]
-        Backend_Node --> Verxio_Protocol[Verxio Protocol (Solana)]
-        Backend_Node --> Google_Gemini[Google Gemini AI]
-        Backend_Node -- "Background Job" --> Confirmations_Job[confirmations.ts]
-    end
-
-    Honeycomb_Protocol -- "On-chain Events" --> Confirmations_Job
-    Verxio_Protocol -- "On-chain Events" --> Confirmations_Job
-
-    Frontend_Node -- "User Wallet Interaction" --> Solana_Blockchain[Solana Blockchain]
-    Solana_Blockchain -- "Transaction Confirmation" --> Backend_Node
-
-    style Frontend_Node fill:#f9f,stroke:#333,stroke-width:2px
-    style Backend_Node fill:#bbf,stroke:#333,stroke-width:2px
-    style Google_Firestore fill:#ccf,stroke:#333,stroke-width:2px
-    style Honeycomb_Protocol fill:#cfc,stroke:#333,stroke-width:2px
-    style Verxio_Protocol fill:#cff,stroke:#333,stroke-width:2px
-    style Google_Gemini fill:#ffc,stroke:#333,stroke-width:2px
-    style Confirmations_Job fill:#fcc,stroke:#333,stroke-width:2px
-    style Solana_Blockchain fill:#fcf,stroke:#333,stroke-width:2px
+Frontend (Next.js)
+  ↓ (User Wallet Interaction)
+Solana Blockchain
+  ↓ (Transaction Confirmation)
+Backend (Node.js/Express.js)
 ```
 
 This diagram illustrates the main components and their interactions within the ShipXP backend ecosystem.
