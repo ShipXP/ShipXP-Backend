@@ -52,7 +52,7 @@ Communication primarily occurs via RESTful API calls over HTTP, with data exchan
 5.  Frontend notifies backend of the transaction signature.
 6.  Backend verifies the on-chain transaction and updates completion status (e.g., "confirmed") and user XP.
 
-## 7. Architecture Diagram (Conceptual)
+## 7. Architecture Diagram
 
 ```
 User
