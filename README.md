@@ -56,25 +56,25 @@ Communication primarily occurs via RESTful API calls over HTTP, with data exchan
 
 ```mermaid
 graph TD
-    User --> Frontend (Frontend (Next.js))
-    Frontend --> Backend (API Calls (REST/JSON))
+    User --> Frontend_Node[Frontend (Next.js)]
+    Frontend_Node -- "API Calls (REST/JSON)" --> Backend_Node[Backend (Node.js/Express.js)]
 
-    subgraph Backend (Node.js/Express.js)
-        Backend --> Google_Firestore[Google Firestore DB] (Firestore SDK)
-        Backend --> Honeycomb_Protocol[Honeycomb Protocol (Solana)] (Honeycomb Client)
-        Backend --> Verxio_Protocol[Verxio Protocol (Solana)] (Verxio Client)
-        Backend --> Google_Gemini[Google Gemini AI] (Gemini API)
-        Backend -- Confirmations_Job[confirmations.ts] (Background Job) --> Confirmations_Job
+    subgraph Backend_Node
+        Backend_Node --> Google_Firestore[Google Firestore DB]
+        Backend_Node --> Honeycomb_Protocol[Honeycomb Protocol (Solana)]
+        Backend_Node --> Verxio_Protocol[Verxio Protocol (Solana)]
+        Backend_Node --> Google_Gemini[Google Gemini AI]
+        Backend_Node -- "Background Job" --> Confirmations_Job[confirmations.ts]
     end
 
-    Honeycomb_Protocol -- Confirmations_Job (On-chain Events) --> Confirmations_Job
-    Verxio_Protocol -- Confirmations_Job (On-chain Events) --> Confirmations_Job
+    Honeycomb_Protocol -- "On-chain Events" --> Confirmations_Job
+    Verxio_Protocol -- "On-chain Events" --> Confirmations_Job
 
-    Frontend -- Solana_Blockchain[Solana Blockchain] (User Wallet Interaction) --> Solana_Blockchain
-    Solana_Blockchain -- Backend (Transaction Confirmation) --> Backend
+    Frontend_Node -- "User Wallet Interaction" --> Solana_Blockchain[Solana Blockchain]
+    Solana_Blockchain -- "Transaction Confirmation" --> Backend_Node
 
-    style Frontend fill:#f9f,stroke:#333,stroke-width:2px
-    style Backend fill:#bbf,stroke:#333,stroke-width:2px
+    style Frontend_Node fill:#f9f,stroke:#333,stroke-width:2px
+    style Backend_Node fill:#bbf,stroke:#333,stroke-width:2px
     style Google_Firestore fill:#ccf,stroke:#333,stroke-width:2px
     style Honeycomb_Protocol fill:#cfc,stroke:#333,stroke-width:2px
     style Verxio_Protocol fill:#cff,stroke:#333,stroke-width:2px
